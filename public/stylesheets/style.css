@@ -1,8 +1,30 @@
 body {
   padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font: 14px "Avenir", Helvetica, Arial, sans-serif;
+  background-color: #49c5b6;
 }
 
 a {
   color: #00B7FF;
+}
+
+input.input-round {
+  font-size: 15px;
+  line-height: 1.2;
+  color: #333;
+  display: block;
+  width: 100%;
+  background: #fff;
+  height: 50px;
+  border-radius: 25px;
+  padding: 0 30px 0 53px;
+}
+.round{
+  font-size: 15px;
+  line-height: 1.2;
+  display: block;
+  width: 100%;
+  height: 50px;
+  border-radius: 25px;
+  padding: 0 30px 0 53px;
 }
