@@ -7,9 +7,11 @@ const saltRounds = 10
 
 module.exports = (pool) => {
   /* GET users listing. */
-  router.get('/', isLoggedIn, (req, res, next) => {
-    res.render('users/index', { title: 'POS', user: req.session.user })
-  })
+  router.get('/', isLoggedIn, async (req, res, next) => {
+    const sql = `SELECT * FROM users`
+    const data = await pool.query(sql)
 
+    res.render('users/index', { title: 'POS', user: req.session.user, data : data.rows })
+  })
   return router
 }

@@ -22,6 +22,9 @@
     <!-- Custom styles for this template-->
     <link href="/stylesheets/sb-admin-2.min.css" rel="stylesheet">
 
+    <!-- DataTables -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
+
 </head>
 
 <body id="page-top">
@@ -185,47 +188,6 @@
                                 <!-- Counter - Alerts -->
                                 <span class="badge badge-danger badge-counter">3+</span>
                             </a>
-                            <!-- Dropdown - Alerts -->
-                            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                                aria-labelledby="alertsDropdown">
-                                <h6 class="dropdown-header">
-                                    Alerts Center
-                                </h6>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-primary">
-                                            <i class="fas fa-file-alt text-white"></i>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-gray-500">December 12, 2019</div>
-                                        <span class="font-weight-bold">A new monthly report is ready to download!</span>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-success">
-                                            <i class="fas fa-donate text-white"></i>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-gray-500">December 7, 2019</div>
-                                        $290.29 has been deposited into your account!
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-warning">
-                                            <i class="fas fa-exclamation-triangle text-white"></i>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-gray-500">December 2, 2019</div>
-                                        Spending Alert: We've noticed unusually high spending for your account.
-                                    </div>
-                                </a>
-                                <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
-                            </div>
                         </li>
 
                         <div class="topbar-divider d-none d-sm-block"></div>
@@ -275,6 +237,63 @@
                         <h1 class="h3 mb-0 text-gray-800">Users</h1>
                     </div>
                     <p>This is data of users</p>
+
+
+                    <div class="card">
+                        <div class="card-header with-border">
+                            <button class="btn btn-primary btn-sm btn-icon-split">
+                                <span class="icon text-white-50">
+                                    <i class="fas fa-solid fa-plus"></i>
+                                </span>
+                                <span class="text">Add</span>
+                        </div>
+                        <div class="card-body table-responsive">
+                            <table class="table table-bordered" id="dataTable">
+                                <thead>
+                                    <tr>
+                                        <th width="10%">User ID</th>
+                                        <th>Email</th>
+                                        <th>Name</th>
+                                        <th>Role</th>
+                                        <th width="15%"><i class="fa fa-cog"></i> Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% data.forEach(item=> { %>
+                                        <tr>
+                                            <td>
+                                                <%= item.userid %>
+                                            </td>
+                                            <td>
+                                                <%= item.email %>
+                                            </td>
+                                            <td>
+                                                <%= item.name %>
+                                            </td>
+                                            <td>
+                                                <%= item.role %>
+                                            </td>
+                                            <td>
+                                                <a class="btn btn-circle btn-sm btn-success">
+                                                    <i class="fas fa-solid fa-info"></i>
+                                                </a>
+                                                <a class="btn btn-circle btn-sm btn-danger">
+                                                    <i class="fas fa-solid fa-trash"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        <% }) %>
+                                </tbody>
+                                <tfoot>
+                                    <th width="10%">User ID</th>
+                                    <th>Email</th>
+                                    <th>Name</th>
+                                    <th>Role</th>
+                                    <th width="15%"><i class="fa fa-cog"></i> Action</th>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
                 </div>
                 <!-- /.container-fluid -->
             </div>
@@ -337,6 +356,18 @@
     <script src="javascripts/chart-area-demo.js"></script>
     <script src="javascripts/chart-pie-demo.js"></script>
 
+    <!-- DataTables -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0"></script>
+    <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+
+
+    <script>
+        $(document).ready(function () {
+            $('#dataTable').DataTable({
+                "lengthMenu": [3, 10, 100]
+            });
+        });
+    </script>
 </body>
 
 </html>
