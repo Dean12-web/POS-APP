@@ -8,7 +8,7 @@ const saltRounds = 10
 module.exports = (pool) => {
   /* GET home page. */
   router.get('/login', (req, res, next) => {
-    res.render('login', { title: 'Express' });
+    res.render('login', { title: 'POS', info: req.flash('info')  });
   });
 
   router.post('/login', async (req, res, next) => {
@@ -43,8 +43,8 @@ module.exports = (pool) => {
     res.render('register', { title: 'Register User' })
   })
 
-  router.get('/', isLoggedIn, (req, res, next) => {
-    res.render('index', {title : 'Login Page', user : req.session.user})
+  router.get('/',isLoggedIn, (req, res, next) => {
+    res.render('index', {title : 'POS', user : req.session.user})
   })
 
   router.post('/register', async (req, res, next) => {
