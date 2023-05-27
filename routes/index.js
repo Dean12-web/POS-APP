@@ -1,14 +1,14 @@
 var express = require('express');
 var router = express.Router();
 const bcrypt = require('bcrypt')
-const {isLoggedIn} = require('../helpers/util')
+const { isLoggedIn } = require('../helpers/util')
 const saltRounds = 10
 
 
 module.exports = (pool) => {
   /* GET home page. */
   router.get('/login', (req, res, next) => {
-    res.render('login', { title: 'POS', info: req.flash('info')  });
+    res.render('login', { title: 'POS', info: req.flash('info') });
   });
 
   router.post('/login', async (req, res, next) => {
@@ -33,8 +33,8 @@ module.exports = (pool) => {
     }
   })
 
-  router.get('/logout', (req,res,next)=>{
-    req.session.destroy((err)=>{
+  router.get('/logout', (req, res, next) => {
+    req.session.destroy((err) => {
       res.redirect('/login')
     })
   })
@@ -43,8 +43,12 @@ module.exports = (pool) => {
     res.render('register', { title: 'Register User' })
   })
 
-  router.get('/',isLoggedIn, (req, res, next) => {
-    res.render('index', {title : 'POS', user : req.session.user})
+  router.get('/', isLoggedIn, (req, res, next) => {
+    res.render('index', { title: 'POS', user: req.session.user })
+  })
+
+  router.get('/users', isLoggedIn, (req, res, next) => {
+    res.render('users', { title: 'POS', user: req.session.user })
   })
 
   router.post('/register', async (req, res, next) => {
@@ -86,6 +90,8 @@ module.exports = (pool) => {
         res.status(500).json({ error: "Error Deleting Data User" })
       }
     })
+
+
 
   })
   return router
