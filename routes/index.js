@@ -44,12 +44,12 @@ module.exports = (pool) => {
   })
 
   router.get('/', isLoggedIn, (req, res, next) => {
-    res.render('index', { title: 'POS', user: req.session.user })
+    res.render('dashboard/index', { title: 'POS', user: req.session.user })
   })
 
-  router.get('/users', isLoggedIn, (req, res, next) => {
-    res.render('users', { title: 'POS', user: req.session.user })
-  })
+  // router.get('/users', isLoggedIn, (req, res, next) => {
+  //   res.render('users', { title: 'POS', user: req.session.user })
+  // })
 
   router.post('/register', async (req, res, next) => {
     try {

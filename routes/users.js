@@ -7,10 +7,9 @@ const saltRounds = 10
 
 module.exports = (pool) => {
   /* GET users listing. */
-  // router.get('/',(res,req,next)=>{
-  //   console.log(req.session.user)
-  //   res.render('users', { title: 'POS'})
-  // })
+  router.get('/', isLoggedIn, (req, res, next) => {
+    res.render('users/index', { title: 'POS', user: req.session.user })
+  })
 
   return router
 }
