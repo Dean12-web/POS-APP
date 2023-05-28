@@ -13,5 +13,12 @@ module.exports = (pool) => {
 
     res.render('users/index', { title: 'POS', user: req.session.user, data : data.rows })
   })
+  router.get('/add', (req,res,next)=>{
+    res.render('users/add', {title:'Add Data', user: req.session.user})
+  })
+
+  router.get('/edit', (req,res,next)=>{
+    res.render('users/edit', {title:'Add Data', user: req.session.user})
+  })
   return router
 }
