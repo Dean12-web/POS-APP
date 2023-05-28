@@ -53,11 +53,12 @@ module.exports = (pool) => {
 
   router.post('/register', async (req, res, next) => {
     try {
-      const { userid, email, name, password, role } = req.body
+      const { email, name, password, role } = req.body
       const hash = bcrypt.hashSync(password, saltRounds);
-      let sql = `INSERT INTO users(userid,email,name,password,role) VALUES($1,$2,$3,$4,$5)`
-      await pool.query(sql, [userid, email, name, hash, role])
+      let sql = `INSERT INTO users(email,name,password,role) VALUES($1,$2,$3,$4)`
+      const data = await pool.query(sql, [email, name, hash, role])``
       console.log('ADDING USER DATA SUCCESS')
+      res.json(data)
     } catch (error) {
       console.log(error)
       res.status(500).json({ error: "Error Creating Data User" })
