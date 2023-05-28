@@ -10,7 +10,7 @@
     <meta name="author" content="">
 
     <title>
-        <%= title %> - Users
+        <%= title %> - Edit
     </title>
 
     <!-- Custom fonts for this template-->
@@ -278,18 +278,18 @@
                         <div class="card-header">
                             <span style="color:#4e73df">Form edit</span>
                         </div>
-                        <form>
+                        <form method="post">
                             <div class="card-body">
                                 <div class="row mb-3">
                                     <label for="inputEmail3" class="col-sm-2 col-form-label">Email</label>
                                     <div class="col-sm-10">
-                                        <input type="email" class="form-control" id="email" name="email">
+                                        <input type="email" class="form-control" id="email" name="email" value="<%= data.email %>">
                                     </div>
                                 </div>
                                 <div class="row mb-3">
                                     <label for="inputPassword3" class="col-sm-2 col-form-label">Name</label>
                                     <div class="col-sm-10">
-                                        <input type="password" class="form-control" id="password" name="password">
+                                        <input type="name" class="form-control" id="name" name="name" value="<%= user.name %>">
                                     </div>
                                 </div>
                                 <fieldset class="form-group">
@@ -298,14 +298,14 @@
                                         <div class="col-sm-10">
                                             <div class="form-check">
                                                 <input class="form-check-input" type="radio" name="role" id="operator"
-                                                    value="Operator" checked>
+                                                    value="operator" <%= data.role == "operator" ? 'checked': ''%>>
                                                 <label class="form-check-label" for="operator">
                                                     Operator
                                                 </label>
                                             </div>
                                             <div class="form-check">
                                                 <input class="form-check-input" type="radio" name="role" id="admin"
-                                                    value="Admin">
+                                                    value="admin" <%= data.role == "admin" ? 'checked': ''%>>
                                                 <label class="form-check-label" for="admin">
                                                     Admin
                                                 </label>
@@ -315,12 +315,12 @@
                                 </fieldset>
                             </div>
                             <div class="card-footer">
-                                <a href="#" class="btn btn-success btn-sm btn-icon-split">
+                                <button type="submit" class="btn btn-success btn-sm btn-icon-split">
                                     <span class="icon text-white-50">
                                         <i class="fas fa-solid fa-database"></i>
                                     </span>
                                     <span class="text">Save</span>
-                                </a>
+                                </button>
                                 <a href="/users" class="btn btn-warning btn-sm btn-icon-split">
                                     <span class="icon text-white-50">
                                         <i class="fas fa-solid fa-backward"></i>

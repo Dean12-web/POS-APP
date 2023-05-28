@@ -86,7 +86,7 @@
 
             <!-- Nav Item - Users Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link" href="/">
+                <a class="nav-link" href="/users">
                     <i class="fas fa-fw fa-user"></i>
                     <span>Users</span></a>
             </li>
@@ -252,11 +252,11 @@
                             <table class="table table-bordered" id="dataTable">
                                 <thead>
                                     <tr>
-                                        <th width="10%">User ID</th>
+                                        <th width="13%">User ID</th>
                                         <th>Email</th>
                                         <th>Name</th>
                                         <th>Role</th>
-                                        <th width="15%"><i class="fa fa-cog"></i> Action</th>
+                                        <th><i class="fa fa-cog"></i> Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -275,22 +275,47 @@
                                                 <%= item.role %>
                                             </td>
                                             <td>
-                                                <a class="btn btn-circle btn-sm btn-success">
+                                                <a href="/users/edit/<%= item.userid %>"
+                                                    class="btn btn-circle btn-sm btn-success">
                                                     <i class="fas fa-solid fa-info"></i>
                                                 </a>
-                                                <a class="btn btn-circle btn-sm btn-danger">
+                                                <a class="btn btn-circle btn-sm btn-danger" data-toggle="modal"
+                                                    data-target="#deleteModal-<%= item.userid %>">
                                                     <i class="fas fa-solid fa-trash"></i>
                                                 </a>
                                             </td>
                                         </tr>
+                                        <!-- Delete Modal-->
+                                        <div class="modal fade" id="deleteModal-<%= item.userid %>" tabindex="-1" role="dialog"
+                                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Deleted
+                                                            Confirmation</h5>
+                                                        <button class="close" type="button" data-dismiss="modal"
+                                                            aria-label="Close">
+                                                            <span aria-hidden="true">×</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">Are you sure, you want delete it ? </div>
+                                                    <div class="modal-footer">
+                                                        <button class="btn btn-secondary" type="button"
+                                                            data-dismiss="modal">No</button>
+                                                        <a class="btn btn-primary"
+                                                            href="/users/delete/<%= item.userid %>">Yes</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <% }) %>
                                 </tbody>
                                 <tfoot>
-                                    <th width="10%">User ID</th>
+                                    <th width="13%">User ID</th>
                                     <th>Email</th>
                                     <th>Name</th>
                                     <th>Role</th>
-                                    <th width="15%"><i class="fa fa-cog"></i> Action</th>
+                                    <th><i class="fa fa-cog"></i> Action</th>
                                 </tfoot>
                             </table>
                         </div>
@@ -339,6 +364,7 @@
             </div>
         </div>
     </div>
+
 
     <!-- Bootstrap core JavaScript-->
     <script src="/javascripts/jquery.min.js"></script>
