@@ -39,61 +39,8 @@ module.exports = (pool) => {
     })
   })
 
-  router.get('/register', (req, res, next) => {
-    res.render('register', { title: 'Register User' })
-  })
-
   router.get('/', isLoggedIn, (req, res, next) => {
     res.render('dashboard/index', { title: 'POS', user: req.session.user })
-  })
-
-  // router.get('/users', isLoggedIn, (req, res, next) => {
-  //   res.render('users', { title: 'POS', user: req.session.user })
-  // })
-
-  router.post('/register', async (req, res, next) => {
-    try {
-      const { email, name, password, role } = req.body
-      const hash = bcrypt.hashSync(password, saltRounds);
-      let sql = `INSERT INTO users(email,name,password,role) VALUES($1,$2,$3,$4)`
-      const data = await pool.query(sql, [email, name, hash, role])``
-      console.log('ADDING USER DATA SUCCESS')
-      res.json(data)
-    } catch (error) {
-      console.log(error)
-      res.status(500).json({ error: "Error Creating Data User" })
-    }
-
-    router.get('/edit', (req, res, next) => {
-      res.render('edit', { title: 'Edit Data User' })
-    })
-
-    router.post('/edit/:userid', async (req, res, next) => {
-      try {
-        const { userid } = req.params;
-        const { email, name, password, role } = req.body;
-        let sql = `UPDATE users SET email = $1, name = $2, password = $3,  role = $4 WHERE id = $5`;
-        await pool.query(sql, [email, name, password, role, userid]);
-        console.log('EDIT USER DATA SUCEES');
-      } catch (error) {
-        console.log(error);
-        res.status(500).json({ error: "Error Updating Data User" })
-      }
-    })
-    router.get('/delete/:userid', async (req, res, next) => {
-      try {
-        const { userid } = req.params
-        const sql = `DELETE FROM users WHERE userid = $1`
-        await pool.query(sql, [userid])
-        console.log('DELETE USER DATA SUCCESS')
-      } catch (error) {
-        console.log(error)
-        res.status(500).json({ error: "Error Deleting Data User" })
-      }
-    })
-
-
-
   })
   return router
 };
