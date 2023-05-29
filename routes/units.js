@@ -4,7 +4,7 @@ const { isLoggedIn } = require('../helpers/util')
 
 
 module.exports = (pool) => {
-    /* GET users listing. */
+    /* GET unitas listing. */
     router.get('/', isLoggedIn, async (req, res, next) => {
         const sql = `SELECT * FROM units`
         const data = await pool.query(sql)
@@ -39,7 +39,7 @@ module.exports = (pool) => {
             res.render('units/form', { title: 'POS - Edit', user: req.session.user, data: data.rows[0], cardheader: 'Form Edit' })
         } catch (error) {
             console.log(error)
-            res.status(500).json({ error: "Error Getting Data User" })
+            res.status(500).json({ error: "Error Getting Data Unit" })
         }
     })
 
@@ -53,7 +53,7 @@ module.exports = (pool) => {
             res.redirect('/units');
         } catch (error) {
             console.log(error)
-            res.status(500).json({ error: "Error Updating Data User" })
+            res.status(500).json({ error: "Error Updating Data Unit" })
         }
     })
 

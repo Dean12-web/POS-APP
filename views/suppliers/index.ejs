@@ -10,7 +10,7 @@
     <meta name="author" content="">
 
     <title>
-        <%= title %>
+        <%= title %> - Users
     </title>
 
     <!-- Custom fonts for this template-->
@@ -21,6 +21,9 @@
 
     <!-- Custom styles for this template-->
     <link href="/stylesheets/sb-admin-2.min.css" rel="stylesheet">
+
+    <!-- DataTables -->
+    <link href="/stylesheets/dataTables.bootstrap4.min.css" rel="stylesheet">
 
 </head>
 
@@ -91,7 +94,7 @@
 
             <!-- Nav Item - Users Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link" href="/">
+                <a class="nav-link" href="/users">
                     <i class="fas fa-fw fa-user"></i>
                     <span>Users</span></a>
             </li>
@@ -193,47 +196,6 @@
                                 <!-- Counter - Alerts -->
                                 <span class="badge badge-danger badge-counter">3+</span>
                             </a>
-                            <!-- Dropdown - Alerts -->
-                            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                                aria-labelledby="alertsDropdown">
-                                <h6 class="dropdown-header">
-                                    Alerts Center
-                                </h6>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-primary">
-                                            <i class="fas fa-file-alt text-white"></i>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-gray-500">December 12, 2019</div>
-                                        <span class="font-weight-bold">A new monthly report is ready to download!</span>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-success">
-                                            <i class="fas fa-donate text-white"></i>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-gray-500">December 7, 2019</div>
-                                        $290.29 has been deposited into your account!
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-warning">
-                                            <i class="fas fa-exclamation-triangle text-white"></i>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-gray-500">December 2, 2019</div>
-                                        Spending Alert: We've noticed unusually high spending for your account.
-                                    </div>
-                                </a>
-                                <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
-                            </div>
                         </li>
 
                         <div class="topbar-divider d-none d-sm-block"></div>
@@ -245,7 +207,7 @@
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">
                                     <%= user.name %>
                                 </span>
-                                <img class="img-profile rounded-circle" src="../images/undraw_profile.svg">
+                                <img class="img-profile rounded-circle" src="images/undraw_profile.svg">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -282,94 +244,89 @@
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">Units</h1>
                     </div>
+                    <p>This is data of Units</p>
+
+
                     <div class="card">
-                        <div class="card-header">
-                            <span style="color:#4e73df">
-                                <%= cardheader %>
-                            </span>
+                        <div class="card-header with-border">
+                            <a href="/suppliers/add" class="btn btn-primary btn-sm btn-icon-split">
+                                <span class="icon text-white-50">
+                                    <i class="fas fa-solid fa-plus"></i>
+                                </span>
+                                <span class="text">Add</span>
+                            </a>
                         </div>
-                        <form method="post" encType="multipart/form-data">
-                            <div class="card-body">
-                                <div class="row mb-3">
-                                    <label for="inputBarcode" class="col-sm-2 col-form-label">Barcode</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="barcode" name="barcode" value="<%= data.barcode %>" <%= data.readonly ? 'readonly' : '' %>>
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <label for="inputName" class="col-sm-2 col-form-label">Name</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="name" name="name" value="<%= data.name %>">
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <label for="inputStock" class="col-sm-2 col-form-label">Stock</label>
-                                    <div class="col-sm-10">
-                                        <input type="number" class="form-control" id="stock" name="stock" value="<%= data.stock %>"
-                                            placeholder="0">
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <label for="inputPurchasePrice" class="col-sm-2 col-form-label">Purchase
-                                        Price</label>
-                                    <div class="col-sm-10">
-                                        <input type="number" class="form-control" id="purchaseprice"
-                                            name="purchaseprice" value="<%= data.purchaseprice %>" placeholder="0">
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <label for="inputSellingPrice" class="col-sm-2 col-form-label">Selling Price</label>
-                                    <div class="col-sm-10">
-                                        <input type="number" class="form-control" id="sellingprice" name="sellingprice"
-                                        value="<%= data.sellingprice %>" placeholder="0">
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <label for="inputUnit" class="col-sm-2 col-form-label">
-                                        Unit
-                                    </label>
-                                    <div class="col-sm-10">
-                                        <select name="unit" id="unit" class="form-control">
-                                            <option value="" selected disabled>Select Unit</option>
-                                            <% dataUnit.forEach(item => { %>
-                                                <option value="<%= item.unit%>" <%= item.unit == data.unit ? 'selected' : '' %>>
-                                                    <%= item.name %>
-                                                </option>
-                                            <% }) %>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="row mb-3 ">
-                                    <label for="picture" class="col-sm-2 col-form-label">Picture</label>
-                                    <div class="col-sm-10">
-                                        <div class="custom-file">
-                                            <label class="custom-file-label" for="picture">Choose file</label>
-                                            <input type="file" class="custom-file-input" id="picture" name="picture">
+                        <div class="card-body table-responsive">
+                            <table class="table table-bordered" id="dataTable">
+                                <thead>
+                                    <tr>
+                                        <th width="13%">Supplier ID</th>
+                                        <th>Name</th>
+                                        <th>Adress</th>
+                                        <th>Phone</th>
+                                        <th><i class="fa fa-cog"></i> Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% data.forEach(item=> { %>
+                                        <tr>
+                                            <td>
+                                                <%= item.supplierid %>
+                                            </td>
+                                            <td>
+                                                <%= item.name %>
+                                            </td>
+                                            <td>
+                                                <%= item.address %>
+                                            </td>
+                                            <td>
+                                                <%= item.phone %>
+                                            </td>
+                                            <td>
+                                                <a href="/suppliers/edit/<%= item.supplierid %>"
+                                                    class="btn btn-circle btn-sm btn-success">
+                                                    <i class="fas fa-solid fa-info"></i>
+                                                </a>
+                                                <a class="btn btn-circle btn-sm btn-danger" data-toggle="modal"
+                                                    data-target="#deleteModal-<%= item.supplierid %>">
+                                                    <i class="fas fa-solid fa-trash"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        <!-- Delete Modal-->
+                                        <div class="modal fade" id="deleteModal-<%= item.supplierid %>" tabindex="-1"
+                                            role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Deleted
+                                                            Confirmation</h5>
+                                                        <button class="close" type="button" data-dismiss="modal"
+                                                            aria-label="Close">
+                                                            <span aria-hidden="true">×</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">Are you sure, you want delete it ? </div>
+                                                    <div class="modal-footer">
+                                                        <button class="btn btn-secondary" type="button"
+                                                            data-dismiss="modal">No</button>
+                                                        <a class="btn btn-primary"
+                                                            href="/suppliers/delete/<%= item.supplierid %>">Yes</a>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="row mb-3 ">
-                                    <label for="preview" class="col-sm-2 col-form-label">Preview</label>
-                                    <div class="col-sm-3">
-                                            <img id="imagepreview" src="/images/<%= data.picture%>" alt="">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-footer">
-                                <button type="submit" class="btn btn-success btn-sm btn-icon-split">
-                                    <span class="icon text-white-50">
-                                        <i class="fas fa-solid fa-database"></i>
-                                    </span>
-                                    <span class="text">Save</span>
-                                </button>
-                                <a href="/goods" class="btn btn-warning btn-sm btn-icon-split">
-                                    <span class="icon text-white-50">
-                                        <i class="fas fa-solid fa-backward"></i>
-                                    </span>
-                                    <span class="text">Back</span>
-                                </a>
-                            </div>
-                        </form>
+                                        <% }) %>
+                                </tbody>
+                                <tfoot>
+                                    <th width="13%">Supplier ID</th>
+                                    <th>Name</th>
+                                    <th>Adress</th>
+                                    <th>Phone</th>
+                                    <th><i class="fa fa-cog"></i> Action</th>
+                                </tfoot>
+                            </table>
+                        </div>
                     </div>
                 </div>
                 <!-- /.container-fluid -->
@@ -416,6 +373,7 @@
         </div>
     </div>
 
+
     <!-- Bootstrap core JavaScript-->
     <script src="/javascripts/jquery.min.js"></script>
     <script src="/javascripts/bootstrap.bundle.min.js"></script>
@@ -432,15 +390,19 @@
     <!-- Page level custom scripts -->
     <script src="javascripts/chart-area-demo.js"></script>
     <script src="javascripts/chart-pie-demo.js"></script>
-    <script>
-        $('#picture').change(function (event) {
-            const [files] = picture.files
-            if (files) {
-                imagepreview.src = URL.createObjectURL(files)
-            }
-        })
-    </script>
 
+    <!-- DataTables -->
+    <script src="javascripts/datatables/jquery.dataTables.min.js"></script>
+    <script src="javascripts/datatables/dataTables.bootstrap4.min.js"></script>
+
+
+    <script>
+        $(document).ready(function () {
+            $('#dataTable').DataTable({
+                "lengthMenu": [3, 10, 100]
+            });
+        });
+    </script>
 </body>
 
 </html>

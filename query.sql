@@ -6,7 +6,6 @@ CREATE TABLE users(
     role VARCHAR (20) NOT NULL
 );
 
-INSERT INTO users(email,name,password,role) VALUES('admin@gmail.com','admin','123','admin');
 
 CREATE TABLE goods(
     barcode VARCHAR(20) PRIMARY KEY NOT NULL,
@@ -18,3 +17,10 @@ CREATE TABLE goods(
     picture TEXT NOT NULL,
     FOREIGN KEY(unit) REFERENCES units(unit)
 );
+
+CREATE TABLE suppliers(
+    supplierid SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    address TEXT NOT NULL,
+    phone VARCHAR(20) NOT NULL
+)
