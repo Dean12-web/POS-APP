@@ -1,8 +1,6 @@
 var express = require('express');
 var router = express.Router();
-const bcrypt = require('bcrypt')
 const { isLoggedIn } = require('../helpers/util')
-const saltRounds = 10
 
 
 module.exports = (pool) => {
@@ -15,7 +13,7 @@ module.exports = (pool) => {
     })
 
     router.get('/add', (req, res, next) => {
-        res.render('units/form', { title: 'POS', user: req.session.user, data: {} })
+        res.render('units/form', { title: 'POS - Add', user: req.session.user, data: {}, cardheader: 'Form Add'})
     })
 
     router.post('/add', async (req, res, next) => {
@@ -38,7 +36,7 @@ module.exports = (pool) => {
             const sql = 'SELECT * FROM units WHERE unit = $1';
             const data = await pool.query(sql, [unit])
             // console.log(data)
-            res.render('units/form', { title: 'Add Data', user: req.session.user, data: data.rows[0] })
+            res.render('units/form', { title: 'POS - Edit', user: req.session.user, data: data.rows[0], cardheader: 'Form Edit' })
         } catch (error) {
             console.log(error)
             res.status(500).json({ error: "Error Getting Data User" })
