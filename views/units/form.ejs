@@ -288,12 +288,21 @@
                         </div>
                         <form method="post">
                             <div class="card-body">
-                                <div class="row mb-3">
-                                    <label for="inputUnit" class="col-sm-2 col-form-label">Unit</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="unit" name="unit" value="<%= data.unit %>">
+                                <% if (data && data.unit) { %>
+                                    <div class="row mb-3">
+                                        <label for="inputNewUnit" class="col-sm-2 col-form-label">Unit</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="newUnit" name="newUnit" value="<%= data.unit %>">
+                                        </div>
                                     </div>
-                                </div>
+                                <% } else { %>
+                                    <div class="row mb-3">
+                                        <label for="inputUnit" class="col-sm-2 col-form-label">Unit</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="unit" name="unit">
+                                        </div>
+                                    </div>
+                                <% } %>
                                 <div class="row mb-3">
                                     <label for="inputName" class="col-sm-2 col-form-label">Name</label>
                                     <div class="col-sm-10">

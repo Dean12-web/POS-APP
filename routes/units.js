@@ -48,9 +48,9 @@ module.exports = (pool) => {
     router.post('/edit/:unit', async (req, res, next) => {
         try {
             const { unit } = req.params;
-            const { name, note } = req.body;
+            const { newUnit, name, note } = req.body;
             let sql = `UPDATE units SET unit = $1, name =$2, note = $3 WHERE unit = $4`
-            await pool.query(sql, [unit, name, note, unit]);
+            await pool.query(sql, [newUnit, name, note, unit]);
             console.log('Data Unit Edited');
             res.redirect('/units');
         } catch (error) {
