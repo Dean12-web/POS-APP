@@ -71,9 +71,9 @@
                 <div id="collapseUtilities" class="collapse" aria-labelledby="headingTwo"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Custom Components:</h6>
-                        <a class="collapse-item" href="buttons.html">Buttons</a>
-                        <a class="collapse-item" href="cards.html">Cards</a>
+                        <h6 class="collapse-header">GOODS UTILITIES :</h6>
+                        <a class="collapse-item" href="buttons.html">Goods</a>
+                        <a class="collapse-item" href="/units">Units</a>
                     </div>
                 </div>
             </li>
@@ -249,7 +249,7 @@
 
                     <div class="card">
                         <div class="card-header with-border">
-                            <a href="#" class="btn btn-primary btn-sm btn-icon-split">
+                            <a href="/units/add" class="btn btn-primary btn-sm btn-icon-split">
                                 <span class="icon text-white-50">
                                     <i class="fas fa-solid fa-plus"></i>
                                 </span>
@@ -260,20 +260,64 @@
                             <table class="table table-bordered" id="dataTable">
                                 <thead>
                                     <tr>
-                                        <th width="13%">User ID</th>
-                                        <th>Email</th>
+                                        <th width="13%">Unit</th>
                                         <th>Name</th>
-                                        <th>Role</th>
+                                        <th>Note</th>
                                         <th><i class="fa fa-cog"></i> Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <% data.forEach(item=> { %>
+                                        <tr>
+                                            <td>
+                                                <%= item.unit %>
+                                            </td>
+                                            <td>
+                                                <%= item.name %>
+                                            </td>
+                                            <td>
+                                                <%= item.note %>
+                                            </td>
+                                            <td>
+                                                <a href="/units/edit/<%= item.unit %>"
+                                                    class="btn btn-circle btn-sm btn-success">
+                                                    <i class="fas fa-solid fa-info"></i>
+                                                </a>
+                                                <a class="btn btn-circle btn-sm btn-danger" data-toggle="modal"
+                                                    data-target="#deleteModal-<%= item.unit %>">
+                                                    <i class="fas fa-solid fa-trash"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        <!-- Delete Modal-->
+                                        <div class="modal fade" id="deleteModal-<%= item.unit %>" tabindex="-1"
+                                            role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Deleted
+                                                            Confirmation</h5>
+                                                        <button class="close" type="button" data-dismiss="modal"
+                                                            aria-label="Close">
+                                                            <span aria-hidden="true">×</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">Are you sure, you want delete it ? </div>
+                                                    <div class="modal-footer">
+                                                        <button class="btn btn-secondary" type="button"
+                                                            data-dismiss="modal">No</button>
+                                                        <a class="btn btn-primary"
+                                                            href="/units/delete/<%= item.unit %>">Yes</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <% }) %>
                                 </tbody>
                                 <tfoot>
-                                    <th width="13%">User ID</th>
-                                    <th>Email</th>
+                                    <th width="13%">Unit</th>
                                     <th>Name</th>
-                                    <th>Role</th>
+                                    <th>Note</th>
                                     <th><i class="fa fa-cog"></i> Action</th>
                                 </tfoot>
                             </table>
