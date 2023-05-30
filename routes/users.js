@@ -11,11 +11,11 @@ module.exports = (pool) => {
     const sql = `SELECT * FROM users`
     const data = await pool.query(sql)
 
-    res.render('users/index', { title: 'POS', user: req.session.user, data: data.rows })
+    res.render('users/index', { title: 'POS',current: 'user', user: req.session.user, data: data.rows })
   })
 
   router.get('/add', (req, res, next) => {
-    res.render('users/add', { title: 'Add Data', user: req.session.user })
+    res.render('users/add', { title: 'Add Data',current: 'user', user: req.session.user })
   })
 
   router.post('/add', async (req, res, next) => {
@@ -23,8 +23,12 @@ module.exports = (pool) => {
       const { email, name, password, role } = req.body
       const hash = bcrypt.hashSync(password, saltRounds);
       let sql = `INSERT INTO users(email,name,password,role) VALUES ($1,$2,$3,$4)`
-      await pool.query(sql, [email, name, hash, role])
+      const data = await pool.query(sql, [email, name, hash, role])
       console.log('Data User Added')
+      // res.json({
+      //   succes:true,
+      //   data: data
+      // })
       res.redirect('/users')
       // res.status(200).json({ success: "Data User Added Successfully" });
     } catch (error) {
@@ -39,7 +43,7 @@ module.exports = (pool) => {
       const sql = 'SELECT * FROM users WHERE userid = $1';
       const data = await pool.query(sql, [userid])
       // console.log(data)
-      res.render('users/edit', { title: 'Add Data', user: req.session.user, data: data.rows[0] })
+      res.render('users/edit', { title: 'Add Data',current: 'user', user: req.session.user, data: data.rows[0] })
     } catch (error) {
       console.log(error)
       res.status(500).json({ error: "Error Getting Data User" })

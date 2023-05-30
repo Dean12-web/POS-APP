@@ -9,11 +9,11 @@ module.exports = (pool) => {
         const sql = `SELECT * FROM units`
         const data = await pool.query(sql)
 
-        res.render('units/index', { title: 'POS', user: req.session.user, data: data.rows })
+        res.render('units/index', { title: 'POS', current: 'unit', user: req.session.user, data: data.rows })
     })
 
     router.get('/add', (req, res, next) => {
-        res.render('units/form', { title: 'POS - Add', user: req.session.user, data: {}, cardheader: 'Form Add'})
+        res.render('units/form', { title: 'POS - Add', current: 'unit', user: req.session.user, data: {}, cardheader: 'Form Add'})
     })
 
     router.post('/add', async (req, res, next) => {
@@ -36,7 +36,7 @@ module.exports = (pool) => {
             const sql = 'SELECT * FROM units WHERE unit = $1';
             const data = await pool.query(sql, [unit])
             // console.log(data)
-            res.render('units/form', { title: 'POS - Edit', user: req.session.user, data: data.rows[0], cardheader: 'Form Edit' })
+            res.render('units/form', { title: 'POS - Edit', current: 'unit', user: req.session.user, data: data.rows[0], cardheader: 'Form Edit' })
         } catch (error) {
             console.log(error)
             res.status(500).json({ error: "Error Getting Data Unit" })

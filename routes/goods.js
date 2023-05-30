@@ -10,14 +10,14 @@ module.exports = (pool) => {
         const sql = `SELECT * FROM goods`
         const data = await pool.query(sql)
 
-        res.render('goods/index', { title: 'POS', user: req.session.user, data: data.rows })
+        res.render('goods/index', { title: 'POS',current: 'goods', user: req.session.user, data: data.rows })
     })
 
     router.get('/add', async (req, res, next) => {
         const sql = `SELECT * FROM units`
         const data = await pool.query(sql)
         console.log(data)
-        res.render('goods/form', { title: 'POS', user: req.session.user, dataUnit: data.rows, data:{}, cardheader: 'Form Add' })
+        res.render('goods/form', { title: 'POS', user: req.session.user, current: 'goods', dataUnit: data.rows, data:{}, cardheader: 'Form Add' })
     })
 
     router.post('/add', async (req, res, next) => {
@@ -53,7 +53,7 @@ module.exports = (pool) => {
             const data = await pool.query(sql, [barcode])
             const unit = await pool.query(sql2)
             console.log(data)
-            res.render('goods/form', { title: 'POS', user: req.session.user,dataUnit: unit.rows, data: { ...data.rows[0], readonly: true }, cardheader: 'Form Edit' })
+            res.render('goods/form', { title: 'POS', current: 'goods', user: req.session.user,dataUnit: unit.rows, data: { ...data.rows[0], readonly: true }, cardheader: 'Form Edit' })
         } catch (error) {
             console.log(error)
             res.status(500).json({ error: "Error Getting Data User" })

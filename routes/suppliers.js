@@ -7,11 +7,11 @@ module.exports = (pool) => {
     router.get('/', async (req, res, next) => {
         const sql = `SELECT * FROM suppliers`
         const data = await pool.query(sql)
-        res.render('suppliers/index', { title: 'POS', user: req.session.user, data: data.rows })
+        res.render('suppliers/index', { title: 'POS', current: 'supplier', user: req.session.user, data: data.rows })
     })
 
     router.get('/add', (req, res, next) => {
-        res.render('suppliers/form', { title: 'POS - Add', user: req.session.user, data: {}, cardheader: 'Form Add' })
+        res.render('suppliers/form', { title: 'POS - Add', current: 'supplier', user: req.session.user, data: {}, cardheader: 'Form Add' })
     })
 
     router.post('/add', async (req, res, next) => {
@@ -33,7 +33,7 @@ module.exports = (pool) => {
             const sql = 'SELECT * FROM suppliers WHERE supplierid = $1';
             const data = await pool.query(sql, [supplierid])
             console.log(data)
-            res.render('suppliers/form', { title: 'POS - Edit', user: req.session.user, data: data.rows[0], cardheader: 'Form Edit' })
+            res.render('suppliers/form', { title: 'POS - Edit', current: 'supplier',user: req.session.user, data: data.rows[0], cardheader: 'Form Edit' })
         } catch (error) {
             console.log(error)
             res.status(500).json({ error: 'Error Getting Data Supplier' })
