@@ -1,0 +1,109 @@
+<%- include('../partials/header.ejs') %>
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Units</h1>
+    </div>
+    <div class="card">
+        <div class="card-header">
+            <h4>
+                <%= cardheader %>
+            </h4>
+        </div>
+        <div class="card-body">
+            <form action="" class="row g-3 ">
+                <div class="col-md-4">
+                    <label for="inputInvoice" class="form-label">Invoice</label>
+                    <input type="text" class="form-control" id="invoice" name="invoice" readonly>
+                </div>
+                <div class="col-md-4">
+                    <label for="inputTime" class="form-label">Time</label>
+                    <input type="text" class="form-control" id="time" name="time" readonly>
+                </div>
+                <div class="col-md-4">
+                    <label for="inputOperator" class="form-label">Operator</label>
+                    <input type="text" class="form-control" id="operator" name="operator" readonly>
+                </div>
+            </form>
+        </div>
+        <hr>
+        <div class="card-body">
+            <form action="" class="row g-3">
+                <div class="col-md-4 mb-3">
+                    <label for="inputBarcode" class="form-label">Goods Barcode</label>
+                    <input type="text" class="form-control" id="inputCity">
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="inputBarcodeName" class="form-label">Goods Name</label>
+                    <input type="text" class="form-control" id="barcodename" name="barcodename" readonly>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="inputStock" class="form-label">Stock</label>
+                    <input type="text" class="form-control" id="stock" readonly>
+                </div>
+                <div class="col-md-4">
+                    <label for="inputPurchasePrice" class="form-label">Purchases Price</label>
+                    <input type="text" class="form-control" id="purchaseprice" name="purchaseprice">
+                </div>
+                <div class="col-md-4">
+                    <label for="inputQuantity" class="form-label">Qty</label>
+                    <input type="text" class="form-control" id="quantity" name="quantity">
+                </div>
+                <div class="col-md-4">
+                    <label for="inputTotalPrice" class="form-label">Total Price</label>
+                    <input type="text" class="form-control" id="totalprice" name="totalprice">
+                </div>
+                <div class="col-md-12 mt-3">
+                    <button type="submit" class="btn btn-primary btn-md btn-icon-split">
+                        <span class="icon text-white-50">
+                            <i class="fas fa-solid fa-plus"></i>
+                        </span>
+                        <span class="text">Add</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+        <hr>
+        <table class="table table-striped" id="dataTable">
+            <thead>
+                <tr>
+                    <th>No.</th>
+                    <th>Barcode</th>
+                    <th>Name</th>
+                    <th>Qty</th>
+                    <th>Price</th>
+                    <th>Total Price</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+        <div class="card-footer">
+            <form action="">
+                <div class="row mb-3">
+                    <label for="inputEmail3" class="col-sm-2 col-form-label">Total Summary</label>
+                    <div class="col-sm-10">
+                        <input type="email" class="form-control" id="inputEmail3">
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="inputEmail3" class="col-sm-2 col-form-label">Supplier</label>
+                    <div class="col-sm-10">
+                        <input type="email" class="form-control" id="inputEmail3">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-success btn-md btn-icon-split">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-solid fa-plus"></i>
+                    </span>
+                    <span class="text">Finish</span>
+                </button>
+                <a href="/purchases" class="btn btn-warning btn-md btn-icon-split">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-solid fa-backward"></i>
+                    </span>
+                    <span class="text">Back</span>
+                </a>
+            </form>
+        </div>
+    </div>
+    <%- include('../partials/footer.ejs') %>

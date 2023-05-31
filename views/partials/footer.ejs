@@ -72,6 +72,12 @@
             "lengthMenu": [3, 10, 100]
         });
     });
+    $('#picture').change(function (event) {
+        const [files] = picture.files
+        if (files) {
+            imagepreview.src = URL.createObjectURL(files)
+        }
+    })
 </script>
 </body>
 
