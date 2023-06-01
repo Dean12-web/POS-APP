@@ -17,7 +17,7 @@
             <table class="table table-bordered" id="dataTable">
                 <thead>
                     <tr>
-                        <th>Invoice</th>
+                        <th width="18%">Invoice</th>
                         <th>Time</th>
                         <th>Total Summary</th>
                         <th>Supplier</th>
@@ -31,16 +31,16 @@
                                 <%= item.invoice %>
                             </td>
                             <td>
-                                <%= item.time %>
+                                <%= moment(item.time).format('YYYY MMMM DD hh:mm:ss') %>
                             </td>
                             <td>
                                 <%= item.totalsum %>
                             </td>
                             <td>
-                                <%= item.supplier %>
+                                <%= item.name %>
                             </td>
                             <td>
-                                <a href="/purchases/edit/<%= item.invoice %>" class="btn btn-circle btn-sm btn-success">
+                                <a href="/purchases/show/<%= item.invoice %>" class="btn btn-circle btn-sm btn-success">
                                     <i class="fas fa-solid fa-info"></i>
                                 </a>
                                 <a class="btn btn-circle btn-sm btn-danger" data-toggle="modal"

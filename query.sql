@@ -66,7 +66,7 @@ CREATE OR REPLACE FUNCTION updatepurchase() RETURNS TRIGGER AS $setpurchase$
         END IF;
         -- Update purchase
         SELECT sum(totalprice) INTO summary FROM purchaseitems WHERE invoice = currentinvoice;
-        UPDATE purchase SET totalsum = COALESCE(summary,0) WHERE invoice = currentinvoice;
+        UPDATE purchases SET totalsum = COALESCE(summary,0) WHERE invoice = currentinvoice;
 
         RETURN NULL;
     END;
