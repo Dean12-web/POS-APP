@@ -9,7 +9,7 @@ module.exports = (pool) => {
         const sql = `SELECT * FROM units`
         const data = await pool.query(sql)
 
-        res.render('units/index', { title: 'POS', current: 'unit', user: req.session.user, data: data.rows })
+        res.render('units/index', { title: 'POS - units', current: 'unit', user: req.session.user, data: data.rows })
     })
 
     router.get('/add', (req, res, next) => {

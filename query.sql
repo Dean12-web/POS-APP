@@ -1,3 +1,5 @@
+-- DONT FORGET TO CASCADE THE TABLE IF HAVE ANY RELATION
+
 CREATE TABLE users(
     userid SERIAL PRIMARY KEY,
     email VARCHAR(100) NOT NULL,
@@ -33,6 +35,13 @@ CREATE TABLE purchases(
     operator INTEGER,
     FOREIGN KEY(supplier) REFERENCES suppliers(supplierid),
     FOREIGN KEY(operator) REFERENCES users(userid)
+);
+
+CREATE TABLE customers(
+    customerid SERIAL PRIMARY KEY,
+    name VARCHAR(100),
+    address TEXT,
+    phone VARCHAR(20)
 );
 
 CREATE TABLE purchaseitems(
