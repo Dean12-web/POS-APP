@@ -40,7 +40,7 @@ module.exports = (pool) => {
   })
 
   router.get('/', isLoggedIn, (req, res, next) => {
-    res.render('dashboard/index', { title: 'POS - Dashboard', current: 'dashboard', user: req.session.user })
+    res.redirect('/dashboard')
   })
   return router
 };

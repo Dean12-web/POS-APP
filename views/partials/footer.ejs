@@ -73,6 +73,11 @@
             imagepreview.src = URL.createObjectURL(files)
         }
     })
+    function updateFileName(input) {
+        var fileName = input.files[0].name;
+        var label = input.nextElementSibling;
+        label.innerText = fileName;
+    }
 </script>
 </body>
 
