@@ -72,26 +72,29 @@
                 </div>
             </form>
         </div>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>No.</th>
-                    <th>Barcode</th>
-                    <th>Name</th>
-                    <th>Qty</th>
-                    <th>Price</th>
-                    <th>Total Price</th>
-                </tr>
-            </thead>
-            <tbody id="tablebody">
-            </tbody>
-        </table>
+        <div class="table-responsive">
+            <table class="table table-striped ">
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Barcode</th>
+                        <th>Name</th>
+                        <th>Qty</th>
+                        <th>Price</th>
+                        <th>Total Price</th>
+                    </tr>
+                </thead>
+                <tbody id="tablebody">
+                </tbody>
+            </table>
+        </div>
         <div class="card-footer">
             <form action="" method="post">
                 <div class="row mb-3">
                     <label for="inputEmail3" class="col-sm-2 col-form-label">Total Summary</label>
                     <div class="col-sm-10">
-                        <input type="email" class="form-control" id="totalsum" name="totalsum" value="<%= data.totalsum %>"  readonly>
+                        <input type="email" class="form-control" id="totalsum" name="totalsum"
+                            value="<%= data.totalsum %>" readonly>
                     </div>
                 </div>
                 <div class="row mb-3">
@@ -125,11 +128,11 @@
     <script src="/javascripts/bootstrap.bundle.min.js"></script>
     <script>
         let invoice = '<%= data.invoice %>'
-        $(document).ready(()=>{
+        $(document).ready(() => {
             readTable();
-            $("#barcode").change((event)=>{
+            $("#barcode").change((event) => {
                 const barcode = $(event.target).val();
-                $.get(`/purchases/goods/${barcode}`).done((data)=>{
+                $.get(`/purchases/goods/${barcode}`).done((data) => {
                     $('#goodsname').val(data.name);
                     $('#stock').val(data.stock);
                     $('#purchaseprice').val(data.purchaseprice);
@@ -137,16 +140,16 @@
                     $('#totalprice').val(0);
                 })
             })
-            $("#quantity").keyup((event)=>{
+            $("#quantity").keyup((event) => {
                 const quantity = $(event.target).val();
                 const purchaseprice = $("#purchaseprice").val()
                 $("#totalprice").val(purchaseprice * quantity)
             });
-            $("#purchaseItemsForm").submit((event)=>{
+            $("#purchaseItemsForm").submit((event) => {
                 event.preventDefault()
                 const itemcode = $("#barcode").val()
                 const quantity = $("#quantity").val()
-                $.post('/purchases/additems', {invoice, itemcode, quantity}).done((data)=>{
+                $.post('/purchases/additems', { invoice, itemcode, quantity }).done((data) => {
                     readTable()
                     $("#totalsum").val(data.totalsum)
                 })
@@ -155,7 +158,7 @@
         const readTable = () => {
             $.get(`/purchases/tables/${invoice}`).done((data) => {
                 let html = ''
-                data.forEach((item,index) => {
+                data.forEach((item, index) => {
                     html += `
                         <tr>
                             <td>${index + 1}</td>

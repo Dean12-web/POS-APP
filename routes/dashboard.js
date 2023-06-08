@@ -5,63 +5,58 @@ module.exports = (pool) => {
 
     router.get('/', async (req, res, next) => {
         try {
-            // USE BETWEEN TO SORT THE DATE 
-            const totalP = await pool.query(`SELECT SUM(totalsum) AS TP FROM purchases`)
-            const totalS = await pool.query('SELECT SUM(totalsum) AS TS FROM sales')
-            const total = await pool.query(`SELECT COUNT(DISTINCT invoice) AS TotalSales FROM sales`)
-            const tablePurchases = await pool.query(`SELECT to_char(time, 'Mon YY') AS monthly, SUM(totalsum) AS tp from purchases GROUP BY monthly `)
-            const tableSales = await pool.query(`SELECT to_char(time, 'Mon YY') AS monthly, SUM(totalsum) AS ts from sales GROUP BY monthly `)
-
-            const purchasesSum = parseFloat(totalP.rows[0].tp);
-            const salesSum = parseFloat(totalS.rows[0].ts);
-            const subtractionResult = (salesSum - purchasesSum).toFixed(2);
-
-            // object that will hold data from table 
-            const monthlyData = {}
-            // iterate over the totalpurchases and populate the monthlyData object
-            for (const purchase of tablePurchases.rows) {
-                const { monthly, tp } = purchase;
-                monthlyData[monthly] = { ...monthlyData[monthly], monthly, expense: tp };
-            }
-            // iterate over totalsales and populate the monthlyData object
-            for (const sale of tableSales.rows) {
-                const { monthly, ts } = sale
-                monthlyData[monthly] = { ...monthlyData[monthly], monthly, revenue: ts }
-            }
-            // iterate over the monghtlyData object and calculate earnings
-            for (const month in monthlyData) {
-                const { expense = 0, revenue = 0 } = monthlyData[month];
-                monthlyData[month].earning = revenue - expense
-            }
-            // Create an array to store the final table data
+            const { rows: purchase } = await pool.query(`SELECT SUM(totalsum) AS tp from purchases`)
+            const { rows: sales } = await pool.query(`SELECT SUM(totalsum) AS ts from sales`)
+            const { rows: total } = await pool.query(`SELECT COUNT(DISTINCT invoice) AS totalSales FROM sales`)
+            const { rows: totalpurchase } = await pool.query(
+                "SELECT to_char(time, 'Mon YY') AS monthly,to_char(time, 'YY-MM') AS sortmonth,SUM(totalsum) AS totalpurchases FROM purchases GROUP BY monthly,sortmonth ORDER BY sortmonth"
+            );
+            const { rows: totalsales } = await pool.query(
+                "SELECT to_char(time, 'Mon YY') AS monthly,to_char(time, 'YY-MM') AS sortmonth,SUM(totalsum) AS totalsales FROM sales GROUP BY monthly,sortmonth ORDER BY sortmonth"
+            );
+            const { rows: direct } = await pool.query(`SELECT COUNT(invoice) as directbuyer FROM sales WHERE customer = 1`)
+            const { rows: customer } = await pool.query(`SELECT COUNT(invoice) as customerbuyer FROM sales WHERE customer != 1`)
             const tableData = []
-            // iterate over the monthlyData object and format the data for the table
-            for (const month in monthlyData) {
-                const { monthly, expense = '0.00', revenue = '0.00', earning = '0.00' } = monthlyData[month]
-                const formattedEarning = parseFloat(earning).toFixed(2);
-                const row = {
-                    monthly,
-                    expense: parseFloat(expense).toFixed(2),
-                    revenue: parseFloat(revenue).toFixed(2),
-                    earning: formattedEarning
+            let data = totalpurchase.concat(totalsales)
+            let result = {}
+            let getMonth = []
+            let monthlyIncome = []
+            data.forEach(item => {
+                if (result[item.monthly]) {
+                    result[item.monthly] = { monthly: item.monthly, expense: item.totalpurchases ? item.totalpurchases : result[item.monthly].expense, revenue: item.totalsales ? item.totalsales : result[item.monthly].revenue }
+                } else {
+                    result[item.monthly] = { monthly: item.monthly, expense: item.totalpurchases ? item.totalpurchases : 0, revenue: item.totalsales ? item.totalsales : 0 }
+                    getMonth.push(item.monthly)
                 }
-                tableData.push(row)
+            });
+            // Get Income monthly 
+            for (const key in result) {
+                monthlyIncome.push(result[key].revenue - result[key].expense)
             }
-            console.log(tableData)
+            // Get Table Data
+            for (const key in result) {
+                tableData.push({ monthly: result[key].monthly, expense: result[key].expense, revenue: result[key].revenue })
+            }
+            console.log(data)
             res.render('dashboard/index', {
                 title: 'POS - Dashboard',
                 current: 'dashboard',
                 user: req.session.user,
-                purchases: totalP.rows[0],
-                sales: totalS.rows[0],
-                total: total.rows[0],
-                subtractionResult,
-                tableData
+                purchases: purchase[0],
+                sales: sales[0],
+                total: total[0],
+                tableData,
+                getMonth,
+                monthlyIncome,
+                direct: direct[0].directbuyer,
+                customer: customer[0].customerbuyer
             })
         } catch (error) {
             console.log(error)
             res.status(500).json({ error: 'Error Showing Data Dashboard' })
         }
     })
+
+
     return router
 }

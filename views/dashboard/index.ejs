@@ -95,7 +95,7 @@
               <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
                 Earnings</div>
               <div class="h5 mb-0 font-weight-bold text-gray-800">
-                <%= subtractionResult %>
+                <%= sales.ts - purchases.tp%>.00
               </div>
             </div>
             <div class="col-auto">
@@ -155,7 +155,15 @@
         <!-- Card Body -->
         <div class="card-body">
           <div class="chart-pie pt-4 pb-2">
-            <canvas id="myPieChart"></canvas>
+            <canvas id="myDoughnutChart"></canvas>
+          </div>
+          <div class="mt-4 text-center small">
+            <span class="mr-2">
+              <i class="fas fa-circle text-primary"></i> Direct
+            </span>
+            <span class="mr-2">
+              <i class="fas fa-circle text-success"></i> Customer
+            </span>
           </div>
         </div>
       </div>
@@ -191,7 +199,7 @@
                 <%= item.revenue %>
               </td>
               <td>
-                <%= item.earning %>
+                <%= item.revenue - item.expense %>.00
               </td>
             </tr>
             <% }) %>
@@ -206,7 +214,7 @@
               <%= sales.ts %>
             </th>
             <th>
-              <%= subtractionResult %>
+              <%= sales.ts - purchases.tp %>.00
             </th>
           </tr>
         </tfoot>
@@ -214,9 +222,6 @@
     </div>
   </div>
   <br>
-  <script src="/javascripts/jquery.min.js"></script>
-  <script src="/javascripts/bootstrap.bundle.min.js"></script>
-  <script src="/javascripts/Chart.min.js"></script>
+  <%- include('../partials/chart.ejs') %>
 
-
-  <%- include('../partials/footer.ejs') %>
+    <%- include('../partials/footer.ejs') %>
