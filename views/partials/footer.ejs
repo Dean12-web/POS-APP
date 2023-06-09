@@ -65,7 +65,9 @@
 <script>
     $(document).ready(function () {
         $('#dataTable').DataTable({
-            "lengthMenu": [3, 10, 100]
+            "responsive": true,
+            "lengthMenu": [3, 10, 100],
+            "aaSorting": []
         });
     });
     $('#picture').change(function (event) {

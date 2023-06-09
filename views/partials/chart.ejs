@@ -4,7 +4,57 @@
     $(document).ready(() => {
         lineChart()
         doughnutChart()
+        csvReport()
     })
+    const csvReport = function () {
+        // Get the generate report button element
+        const generateReportButton = $('#generateReportButton');
+
+        // Add event listener for the button click
+        generateReportButton.on('click', function () {
+            // Get the table element
+            const table = $('#dataTable');
+
+            // Create an empty array to store the CSV rows
+            const rows = [];
+
+            // Add header row to the rows array
+            const headerRow = ['Month', 'Expense', 'Revenue', 'Earning'];
+            rows.push(headerRow.join(','));
+            // Iterate through each table row
+            table.find('tbody tr').each(function () {
+                const rowData = [];
+
+                // Iterate through each cell in the row
+                $(this).find('td').each(function () {
+                    // Push the cell's text content to the rowData array
+                    rowData.push($(this).text().trim());
+                });
+                // Join the rowData array with commas to create a CSV row
+                const csvRow = rowData.join(',');
+
+                // Push the CSV row to the rows array
+                rows.push(csvRow);
+            });
+            console.log(rows)
+
+            // Join the rows array with line breaks to create the final CSV content
+            const csvContent = rows.join('\n');
+
+            // Create a download link for the CSV file
+            const downloadLink = $('<a></a>', {
+                href: 'data:text/csv;charset=utf-8,' + encodeURIComponent(csvContent),
+                download: 'report.csv',
+                style: 'display: none;'
+            });
+
+            // Add the download link to the document and click it to trigger the download
+            $('body').append(downloadLink);
+            downloadLink[0].click();
+            downloadLink.remove();
+        });
+    };
+
     function number_format(number, decimals, dec_point, thousands_sep) {
         // *     example: number_format(1234.56, 2, ',', ' ');
         // *     return: '1 234,56'
@@ -31,6 +81,7 @@
     }
     const lineChart = () => {
         const getMonth = <%- JSON.stringify(getMonth) %>;
+        console.log(getMonth)
         const monthlyIncome = <%- JSON.stringify(monthlyIncome) %>;
         const ctx = $("#myLineChart");
         new Chart(ctx, {

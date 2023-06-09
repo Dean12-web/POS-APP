@@ -2,10 +2,10 @@
   <!-- Page Heading -->
   <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-    <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+    <button  id="generateReportButton" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
       <i class="fas fa-download fa-sm text-white-50"></i>
       Generate Report
-    </a>
+    </button>
   </div>
   <!-- Card Date -->
   <form action="" id="dateForm">
@@ -19,11 +19,11 @@
         <div class="row g-3">
           <div class="col-md-6">
             <label for="inputStartDate" class="form-label">Start Date</label>
-            <input type="date" class="form-control" id="startDate" name="endDate">
+            <input type="date" class="form-control" id="startDate" name="startDate" value="<%= query.startDate %>">
           </div>
           <div class="col-md-6">
             <label for="inputEndDate" class="form-label">End Date</label>
-            <input type="date" class="form-control" id="endDate" name="endDate">
+            <input type="date" class="form-control" id="endDate" name="endDate" value="<%= query.endDate %>">
           </div>
         </div>
       </div>
@@ -34,12 +34,12 @@
           </span>
           <span class="text">Query</span>
         </button>
-        <button class="btn btn-md btn-warning btn-icon-split">
+        <a href="/" class="btn btn-md btn-warning btn-icon-split">
           <span class="icon text-white-50">
             <i class="fas fa-solid fa-arrow-left"></i>
           </span>
           <span class="text">Reset</span>
-        </button>
+        </a>
       </div>
     </div>
   </form>
