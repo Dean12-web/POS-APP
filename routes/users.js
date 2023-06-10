@@ -11,11 +11,11 @@ module.exports = (pool) => {
     const sql = `SELECT * FROM users`
     const data = await pool.query(sql)
 
-    res.render('users/index', { title: 'POS',current: 'user', user: req.session.user, data: data.rows })
+    res.render('users/index', { title: 'POS', current: 'user', user: req.session.user, data: data.rows })
   })
 
   router.get('/add', (req, res, next) => {
-    res.render('users/add', { title: 'Add Data',current: 'user', user: req.session.user })
+    res.render('users/add', { title: 'Add Data', current: 'user', user: req.session.user })
   })
 
   router.post('/add', async (req, res, next) => {
@@ -43,7 +43,7 @@ module.exports = (pool) => {
       const sql = 'SELECT * FROM users WHERE userid = $1';
       const data = await pool.query(sql, [userid])
       // console.log(data)
-      res.render('users/edit', { title: 'Add Data',current: 'user', user: req.session.user, data: data.rows[0] })
+      res.render('users/edit', { title: 'Add Data', current: 'user', user: req.session.user, data: data.rows[0] })
     } catch (error) {
       console.log(error)
       res.status(500).json({ error: "Error Getting Data User" })
@@ -75,6 +75,41 @@ module.exports = (pool) => {
       console.log(error)
       res.status(500).json({ error: "Error Deleting Data User" })
     }
+  })
+
+  router.get('/profile/', async (req, res, next) => {
+    try {
+      const {email} = req.body
+      console.log(email)
+      const {datas} = await pool.query(`SELECT * FROM users WHERE email = $1`, [email])
+      // console.log(datas[0])
+      res.render('users/profile', { title: 'POS - Profile', current: 'dashboard', user: req.session.user })
+    } catch (error) {
+      console.log(error)
+      res.status(500).json({ error: "Error Getting Profile User" })
+    }
+  })
+
+  router.post('/profile', async (req, res, next) => {
+    try {
+      const {userid} = req.session.user
+      const {email,name} = req.body
+      // console.log(email)
+      await pool.query(`UPDATE users SET email = $1, name = $2 WHERE userid = $3 returning *`,[email, name, userid])
+      const {rows : datas} = await pool.query(`SELECT * FROM users WHERE email = $1`, [email])
+      console.log(datas[0])
+      const data = datas[0]
+      req.session.user = data
+      req.session.save()
+      res.redirect('/users/profile')
+    } catch (error) {
+      console.log('Error in query:', error)
+      res.status(500).json({error: 'Error Updating Profile'})
+    }
+  })
+
+  router.get('/changepassword', (req, res, next) => {
+    res.render('users/password', { title: 'POS - Change Password', current: 'dashboard', user: req.session.user })
   })
   return router
 }
