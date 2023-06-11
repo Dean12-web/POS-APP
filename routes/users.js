@@ -83,7 +83,7 @@ module.exports = (pool) => {
       console.log(email)
       const {datas} = await pool.query(`SELECT * FROM users WHERE email = $1`, [email])
       // console.log(datas[0])
-      res.render('users/profile', { title: 'POS - Profile', current: 'dashboard', user: req.session.user })
+      res.render('users/profile', { title: 'POS - Profile', current: 'dashboard', user: req.session.user, info: req.flash('info') })
     } catch (error) {
       console.log(error)
       res.status(500).json({ error: "Error Getting Profile User" })
@@ -101,6 +101,7 @@ module.exports = (pool) => {
       const data = datas[0]
       req.session.user = data
       req.session.save()
+      req.flash('info', 'Your profile has been updated'); 
       res.redirect('/users/profile')
     } catch (error) {
       console.log('Error in query:', error)
