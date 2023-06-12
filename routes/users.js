@@ -79,10 +79,6 @@ module.exports = (pool) => {
 
   router.get('/profile/', async (req, res, next) => {
     try {
-      const {email} = req.body
-      console.log(email)
-      const {datas} = await pool.query(`SELECT * FROM users WHERE email = $1`, [email])
-      // console.log(datas[0])
       res.render('users/profile', { title: 'POS - Profile', current: 'dashboard', user: req.session.user, info: req.flash('info') })
     } catch (error) {
       console.log(error)
@@ -92,25 +88,57 @@ module.exports = (pool) => {
 
   router.post('/profile', async (req, res, next) => {
     try {
-      const {userid} = req.session.user
-      const {email,name} = req.body
+      const { userid } = req.session.user
+      const { email, name } = req.body
       // console.log(email)
-      await pool.query(`UPDATE users SET email = $1, name = $2 WHERE userid = $3 returning *`,[email, name, userid])
-      const {rows : datas} = await pool.query(`SELECT * FROM users WHERE email = $1`, [email])
-      console.log(datas[0])
+      await pool.query(`UPDATE users SET email = $1, name = $2 WHERE userid = $3`, [email, name, userid])
+      const { rows: datas } = await pool.query(`SELECT * FROM users WHERE email = $1`, [email])
+      // console.log(datas[0])
       const data = datas[0]
       req.session.user = data
       req.session.save()
-      req.flash('info', 'Your profile has been updated'); 
+      req.flash('info', 'Your profile has been updated');
       res.redirect('/users/profile')
     } catch (error) {
       console.log('Error in query:', error)
-      res.status(500).json({error: 'Error Updating Profile'})
+      res.status(500).json({ error: 'Error Updating Profile' })
     }
   })
 
   router.get('/changepassword', (req, res, next) => {
-    res.render('users/password', { title: 'POS - Change Password', current: 'dashboard', user: req.session.user })
+    try {
+      res.render('users/password', { title: 'POS - Change Password', current: 'dashboard', user: req.session.user, error: req.flash('error'), info : req.flash('info') })
+    } catch (error) {
+      console.log(error)
+      res.status(500).json({ error: "Error Getting Data" })
+    }
+  })
+
+  router.post('/changepassword', async (req, res, next) => {
+    try {
+      const {userid} = req.session.user
+      const { oldpassword, newpassword, repassword } = req.body
+      
+      // Check old password and paswword in the data user same or not
+      const { rows: [user] } = await pool.query(`SELECT * FROM users WHERE userid = $1`, [userid]);
+      if(!bcrypt.compareSync(oldpassword,user.password)){
+        req.flash('error', 'Old Password is Wrong')
+        return res.redirect('/users/changepassword')
+      }
+      
+      if(newpassword!== repassword){
+        req.flash('error',"Retype Password is doesn't match")
+        return res.redirect('/users/changepassword')
+      }
+      const hash = bcrypt.hashSync(newpassword, saltRounds)
+
+      await pool.query(`UPDATE users set password = $1 WHERE userid = $2`, [hash, userid])
+      req.flash('info', 'Your Password Has Been Updated')
+      res.redirect('/users/changepassword')
+    } catch (error) {
+      console.log(error)
+      res.status(500).json({ error: "Error Changig Password User" })
+    }
   })
   return router
 }
