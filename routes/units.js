@@ -1,11 +1,11 @@
 var express = require('express');
 var router = express.Router();
-const { isLoggedIn } = require('../helpers/util')
+const { isLoggedIn, isAdmin } = require('../helpers/util')
 
 
 module.exports = (pool) => {
     /* GET unitas listing. */
-    router.get('/', isLoggedIn, async (req, res, next) => {
+    router.get('/',isLoggedIn, isAdmin, async (req, res, next) => {
         const sql = `SELECT * FROM units`
         const data = await pool.query(sql)
 

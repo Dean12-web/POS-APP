@@ -1,13 +1,17 @@
 var express = require('express');
 var router = express.Router();
-var moment = require('moment')
+var moment = require('moment');
+const { isLoggedIn } = require('../helpers/util');
 module.exports = (pool) => {
 
-    router.get('/', async (req, res, next) => {
+
+    router.get('/', isLoggedIn,async (req, res, next) => {
         try {
-            const sql = `SELECT * FROM purchases LEFT JOIN suppliers ON purchases.supplier = suppliers.supplierid ORDER BY time`
+            const sql = `SELECT * FROM purchases LEFT JOIN suppliers ON purchases.supplier = suppliers.supplierid ORDER BY time desc`
             const data = await pool.query(sql)
-            res.render('purchases/index', { title: 'POS - Purchase', current: 'purchases', user: req.session.user, data: data.rows, moment })
+            const hasil = req.session.user.id !== data.rows[0].operator
+            console.log(hasil)
+            res.render('purchases/index', { title: 'POS - Purchase', current: 'purchases', user: req.session.user, data: data.rows, moment, current_user : req.session.user})
         } catch (error) {
             console.log(error)
             res.status(500).json({ error: 'Error Getting Data Purchases' })
@@ -37,7 +41,7 @@ module.exports = (pool) => {
             const getSuppplier = await pool.query(supsql)
             res.render('purchases/form',
                 {
-                    title: 'POS - Add',
+                    title: 'POS - Purchases',
                     current: 'purchases',
                     user: req.session.user,
                     moment,

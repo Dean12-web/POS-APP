@@ -43,33 +43,7 @@
     </div>
 </div>
 
-
-<!-- Bootstrap core JavaScript-->
-<script src="/javascripts/jquery.min.js"></script>
-<script src="/javascripts/bootstrap.bundle.min.js"></script>
-
-<!-- Core plugin JavaScript-->
-<script src="/javascripts/jquery.easing.min.js"></script>
-
-<!-- Custom scripts for all pages-->
-<script src="/javascripts/sb-admin-2.min.js"></script>
-
-<!-- Page level plugins -->
-<script src="/javascripts/Chart.min.js"></script>
-
-<!-- DataTables -->
-<script src="javascripts/datatables/jquery.dataTables.min.js"></script>
-<script src="javascripts/datatables/dataTables.bootstrap4.min.js"></script>
-
-<script src="/javascripts/chart-doughnut.js"></script>
-<script>
-    $(document).ready(function () {
-        $('#dataTable').DataTable({
-            "responsive": true,
-            "lengthMenu": [3, 10, 100],
-            "aaSorting": []
-        });
-    });
+<script> 
     $('#picture').change(function (event) {
         const [files] = picture.files
         if (files) {

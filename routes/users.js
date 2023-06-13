@@ -1,13 +1,13 @@
 var express = require('express');
 var router = express.Router();
 const bcrypt = require('bcrypt')
-const { isLoggedIn } = require('../helpers/util')
+const { isLoggedIn, isAdmin } = require('../helpers/util')
 const saltRounds = 10
 
 
 module.exports = (pool) => {
   /* GET users listing. */
-  router.get('/', isLoggedIn, async (req, res, next) => {
+  router.get('/', isLoggedIn, isAdmin, async (req, res, next) => {
     const sql = `SELECT * FROM users`
     const data = await pool.query(sql)
 
@@ -43,7 +43,7 @@ module.exports = (pool) => {
       const sql = 'SELECT * FROM users WHERE userid = $1';
       const data = await pool.query(sql, [userid])
       // console.log(data)
-      res.render('users/edit', { title: 'Add Data', current: 'user', user: req.session.user, data: data.rows[0] })
+      res.render('users/edit', { title: 'Edit Data', current: 'user', user: req.session.user, data: data.rows[0] })
     } catch (error) {
       console.log(error)
       res.status(500).json({ error: "Error Getting Data User" })
@@ -107,7 +107,7 @@ module.exports = (pool) => {
 
   router.get('/changepassword', (req, res, next) => {
     try {
-      res.render('users/password', { title: 'POS - Change Password', current: 'dashboard', user: req.session.user, error: req.flash('error'), info : req.flash('info') })
+      res.render('users/password', { title: 'POS - Change Password', current: 'dashboard', user: req.session.user, error: req.flash('error'), info: req.flash('info') })
     } catch (error) {
       console.log(error)
       res.status(500).json({ error: "Error Getting Data" })
@@ -116,18 +116,18 @@ module.exports = (pool) => {
 
   router.post('/changepassword', async (req, res, next) => {
     try {
-      const {userid} = req.session.user
+      const { userid } = req.session.user
       const { oldpassword, newpassword, repassword } = req.body
-      
+
       // Check old password and paswword in the data user same or not
       const { rows: [user] } = await pool.query(`SELECT * FROM users WHERE userid = $1`, [userid]);
-      if(!bcrypt.compareSync(oldpassword,user.password)){
+      if (!bcrypt.compareSync(oldpassword, user.password)) {
         req.flash('error', 'Old Password is Wrong')
         return res.redirect('/users/changepassword')
       }
-      
-      if(newpassword!== repassword){
-        req.flash('error',"Retype Password is doesn't match")
+
+      if (newpassword !== repassword) {
+        req.flash('error', "Retype Password is doesn't match")
         return res.redirect('/users/changepassword')
       }
       const hash = bcrypt.hashSync(newpassword, saltRounds)
@@ -139,6 +139,34 @@ module.exports = (pool) => {
       console.log(error)
       res.status(500).json({ error: "Error Changig Password User" })
     }
+  })
+
+  router.get('/datatable', async (req, res, next) => {
+    let params = []
+
+    if (req.query.search.value) {
+      params.push(`name ilike '%${req.query.search.value}%'`)
+    }
+    if (req.query.search.value) {
+      params.push(`email ilike '%${req.query.search.value}%'`)
+    }
+
+    const limit = req.query.length
+    const offset = req.query.start
+    const sortBy = req.query.columns[req.query.order[0].column].data
+    const sortMode = req.query.order[0].dir
+
+    const total = await pool.query(`SELECT COUNT(*) as total FROM users${params.length > 0 ? ` WHERE ${params.join(' OR ')}` : ''}`)
+    const data = await pool.query(`SELECT * FROM users${params.length > 0 ? ` WHERER ${params.join(' OR ')}`: ''} ORDER BY ${sortBy} ${sortMode} limit ${limit} offset ${offset} `)
+
+    const response = {
+      "draw" : Number(req.query.draw),
+      "recordsTotal" : total.rows[0].total,
+      "recordsFiltered" : total.rows[0].total,
+      "data" : data.rows
+    }
+
+    res.json(response)
   })
   return router
 }

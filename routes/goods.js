@@ -1,12 +1,12 @@
 var express = require('express');
 var router = express.Router();
 var path = require('path');
-const { isLoggedIn } = require('../helpers/util')
+const { isLoggedIn, isAdmin } = require('../helpers/util')
 
 
 module.exports = (pool) => {
     /* GET users listing. */
-    router.get('/', isLoggedIn, async (req, res, next) => {
+    router.get('/', isAdmin, async (req, res, next) => {
         const sql = `SELECT * FROM goods`
         const data = await pool.query(sql)
 

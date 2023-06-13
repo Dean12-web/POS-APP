@@ -1,10 +1,11 @@
 var express = require('express');
+const { isLoggedIn } = require('../helpers/util');
 var router = express.Router();
 
 
 module.exports = (pool) => {
     /* GET suppliers listing. */
-    router.get('/', async (req, res, next) => {
+    router.get('/',isLoggedIn, async (req, res, next) => {
         const sql = `SELECT * FROM suppliers`
         const data = await pool.query(sql)
         res.render('suppliers/index', { title: 'POS', current: 'supplier', user: req.session.user, data: data.rows })

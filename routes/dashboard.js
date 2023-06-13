@@ -1,9 +1,11 @@
 var express = require('express')
+const { isAdmin, isLoggedIn } = require('../helpers/util')
 var router = express.Router()
+
 
 module.exports = (pool) => {
 
-    router.get('/', async (req, res, next) => {
+    router.get('/', isLoggedIn, isAdmin, async (req, res, next) => {
         try {
             const { startDate, endDate } = req.query
             if (startDate && endDate) {
@@ -183,7 +185,7 @@ module.exports = (pool) => {
                 for (const key in result) {
                     tableData.push({ monthly: result[key].monthly, expense: result[key].expense, revenue: result[key].revenue })
                 }
-                console.log(tableData)
+                console.log(req.session.user.role)
                 // console.log(data)
                 res.render('dashboard/index', {
                     title: 'POS - Dashboard',

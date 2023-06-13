@@ -1,9 +1,10 @@
 var express = require('express')
 var router = express.Router()
 var moment = require('moment')
+const { isLoggedIn } = require('../helpers/util')
 
 module.exports = (pool) => {
-    router.get('/', async (req, res, next) => {
+    router.get('/',isLoggedIn, async (req, res, next) => {
         try {
             const sql = `SELECT * FROM sales LEFT JOIN customers ON sales.customer = customers.customerid `
             const data = await pool.query(sql)
@@ -36,7 +37,7 @@ module.exports = (pool) => {
             const getBarcode = await pool.query(goodsSql)
             const getCustomer = await pool.query(custSql)
             res.render('sales/form', {
-                title: 'POS - Show',
+                title: 'POS - Sales',
                 current: 'sales',
                 user: req.session.user,
                 moment,

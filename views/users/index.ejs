@@ -24,33 +24,38 @@
                         <th><i class="fa fa-cog"></i> Action</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <% data.forEach(item=> { %>
-                        <tr>
-                            <td>
-                                <%= item.userid %>
-                            </td>
-                            <td>
-                                <%= item.email %>
-                            </td>
-                            <td>
-                                <%= item.name %>
-                            </td>
-                            <td>
-                                <%= item.role %>
-                            </td>
-                            <td>
-                                <a href="/users/edit/<%= item.userid %>" class="btn btn-circle btn-sm btn-success">
-                                    <i class="fas fa-solid fa-info"></i>
-                                </a>
-                                <a class="btn btn-circle btn-sm btn-danger" data-toggle="modal"
-                                    data-target="#deleteModal-<%= item.userid %>">
-                                    <i class="fas fa-solid fa-trash"></i>
-                                </a>
-                            </td>
-                        </tr>
-                        <!-- Delete Modal-->
-                        <div class="modal fade" id="deleteModal-<%= item.userid %>" tabindex="-1" role="dialog"
+                <tfoot>
+                    <th width="13%">User ID</th>
+                    <th>Email</th>
+                    <th>Name</th>
+                    <th>Role</th>
+                    <th><i class="fa fa-cog"></i> Action</th>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+    <script>
+        $(document).ready(() => {
+            $('#dataTable').DataTable({
+                "lenghtMenu": [[1, 5, -1], [1, 5, "All"]],
+                "processing": true,
+                "serverSide": true,
+                "ajax": "/users/datatable",
+                "columns":[
+                    {"data": "userid"},
+                    {"data": "email"},
+                    {"data": "name"},
+                    {"data": "role"},
+                    {"data": "userid",
+                    render: (data)=>{
+                        return `
+                        <a href="/users/edit/${data}" class="btn btn-circle btn-sm btn-success">
+                            <i class="fas fa-solid fa-info"></i>
+                        </a>
+                        <a class="btn btn-circle btn-sm btn-danger" data-toggle="modal" data-target="#deleteModal${data}">
+                            <i class="fas fa-solid fa-trash"></i>
+                        </a>
+                        <div class="modal fade" id="deleteModal${data}" tabindex="-1" role="dialog"
                             aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
@@ -64,21 +69,15 @@
                                     <div class="modal-body">Are you sure, you want delete it ? </div>
                                     <div class="modal-footer">
                                         <button class="btn btn-secondary" type="button" data-dismiss="modal">No</button>
-                                        <a class="btn btn-primary" href="/users/delete/<%= item.userid %>">Yes</a>
+                                        <a class="btn btn-primary" href="/users/delete/${data}">Yes</a>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <% }) %>
-                </tbody>
-                <tfoot>
-                    <th width="13%">User ID</th>
-                    <th>Email</th>
-                    <th>Name</th>
-                    <th>Role</th>
-                    <th><i class="fa fa-cog"></i> Action</th>
-                </tfoot>
-            </table>
-        </div>
-    </div>
-<%- include('../partials/footer.ejs') %>
+                        `
+                    }}
+                ]
+            })
+        })
+    </script>
+    <%- include('../partials/footer.ejs') %>

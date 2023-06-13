@@ -40,7 +40,9 @@
                                 <%= item.name %>
                             </td>
                             <td>
-                                <a href="/purchases/show/<%= item.invoice %>" class="btn btn-circle btn-sm btn-success">
+                                <a href="/purchases/show/<%= item.invoice %>"
+                                    class="btn btn-circle btn-sm btn-success <%= user.id !== item.operator ? 'disabled' : '' %>"
+                                    aria-disabled="<%= item.operator !== user.id ? 'true' : 'false' %>">
                                     <i class="fas fa-solid fa-info"></i>
                                 </a>
                                 <a class="btn btn-circle btn-sm btn-danger" data-toggle="modal"
@@ -81,4 +83,4 @@
             </table>
         </div>
     </div>
-<%- include('../partials/footer.ejs') %>
+    <%- include('../partials/footer.ejs') %>
