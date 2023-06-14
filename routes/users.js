@@ -147,6 +147,8 @@ module.exports = (pool) => {
     if (req.query.search.value) {
       params.push(`name ilike '%${req.query.search.value}%'`)
     }
+    // console.log(req.query.search.value)
+    // console.log(params)
     if (req.query.search.value) {
       params.push(`email ilike '%${req.query.search.value}%'`)
     }
@@ -155,9 +157,13 @@ module.exports = (pool) => {
     const offset = req.query.start
     const sortBy = req.query.columns[req.query.order[0].column].data
     const sortMode = req.query.order[0].dir
-
-    const total = await pool.query(`SELECT COUNT(*) as total FROM users${params.length > 0 ? ` WHERE ${params.join(' OR ')}` : ''}`)
-    const data = await pool.query(`SELECT * FROM users${params.length > 0 ? ` WHERER ${params.join(' OR ')}`: ''} ORDER BY ${sortBy} ${sortMode} limit ${limit} offset ${offset} `)
+    const sqlData = `SELECT * FROM users${params.length > 0 ? ` WHERE ${params.join(' OR ')}`: ''} ORDER BY ${sortBy} ${sortMode} limit ${limit} offset ${offset} `
+    const sqlTotal = `SELECT COUNT(*) as total FROM users${params.length > 0 ? ` WHERE ${params.join(' OR ')}` : ''}`
+    const total = await pool.query(sqlTotal)
+    const data = await pool.query(sqlData)
+    // console.log(sqlData)
+    // console.log(limit, offset)
+    console.log(total.rows[0].total)
 
     const response = {
       "draw" : Number(req.query.draw),

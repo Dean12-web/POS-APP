@@ -5,7 +5,7 @@ const { isLoggedIn, isAdmin } = require('../helpers/util')
 
 module.exports = (pool) => {
     /* GET unitas listing. */
-    router.get('/',isLoggedIn, isAdmin, async (req, res, next) => {
+    router.get('/', isLoggedIn, isAdmin, async (req, res, next) => {
         const sql = `SELECT * FROM units`
         const data = await pool.query(sql)
 
@@ -13,7 +13,7 @@ module.exports = (pool) => {
     })
 
     router.get('/add', (req, res, next) => {
-        res.render('units/form', { title: 'POS - Add', current: 'unit', user: req.session.user, data: {}, cardheader: 'Form Add'})
+        res.render('units/form', { title: 'POS - Add', current: 'unit', user: req.session.user, data: {}, cardheader: 'Form Add' })
     })
 
     router.post('/add', async (req, res, next) => {
@@ -68,6 +68,39 @@ module.exports = (pool) => {
             console.log(error)
             res.status(500).json({ error: "Error Deleting Data User" })
         }
+    })
+
+    router.get('/datatable', async (req, res, next) => {
+        let params = []
+
+        if(req.query.search.value){
+            params.push(`unit ILIKE '%${req.query.search.value}%'`)
+        }
+        if(req.query.search.value){
+            params.push(`name ILIKE '%${req.query.search.value}%'`)
+        }
+        if(req.query.search.value){
+            params.push(`note ILIKE '%${req.query.search.value}%'`)
+        }
+
+        const limit = req.query.length
+        const offset = req.query.start
+        const sortBy = req.query.columns[req.query.order[0].column].data
+        const sortMode = req.query.order[0].dir
+        const sqlData = `SELECT * FROM units${params.length > 0 ?` WHERE ${params.join(' OR ')}` : ''} ORDER BY ${sortBy} ${sortMode} LIMIT ${limit} OFFSET ${offset} `
+        const sqlTotal = `SELECT COUNT(*) as total FROM units${params.length > 0 ? ` WHERE ${params.join(' OR ')}`: ''}`
+        const data = await pool.query(sqlData)
+        console.log(sqlData)
+        const total = await pool.query(sqlTotal)
+
+        const response = {
+            "draw" : Number(req.query.draw),
+            "recordsTotal" : total.rows[0].total,
+            "recordsFiltered" : total.rows[0].total,
+            "data" : data.rows
+        }
+
+        res.json(response)
     })
     return router
 }

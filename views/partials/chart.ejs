@@ -1,7 +1,10 @@
-<script src="/javascripts/jquery.min.js"></script>
-<script src="/javascripts/Chart.min.js"></script>
 <script>
     $(document).ready(() => {
+        $('#dataTable').DataTable({
+        "lengthMenu": [3, 10, 100],
+        "responsive": true,
+        "aaSorting": []
+      });
         lineChart()
         doughnutChart()
         csvReport()
