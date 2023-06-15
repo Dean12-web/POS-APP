@@ -111,47 +111,35 @@ module.exports = (pool) => {
 
     router.get('/datatable', async (req, res, next) => {
         let params = []
+        if (req.query.search.value) {
+            const searchValue = req.query.search.value;
+            params.push(`barcode ILIKE '%${searchValue}%'`);
+            params.push(`name ILIKE '%${searchValue}%'`);
+            params.push(`unit ILIKE '%${searchValue}%'`);
+            // params.push(`stock = ${searchValue}`);
+            // params.push(`purchaseprice = ${searchValue}`);
 
-        if(req.query.search.value){
-            params.push(`barcode ILIKE '%${req.query.search.value}%'`)
         }
-        if(req.query.search.value){
-            params.push(`name ILIKE '%${req.query.search.value}%'`)
-        }
-        if(req.query.search.value){
-            params.push(`stock = '%${req.query.search.value}%'`)
-        }
-        if(req.query.search.value){
-            params.push(`name ILIKE '%${req.query.search.value}%'`)
-        }
-        if(req.query.search.value){
-            params.push(`purchaseprice = '%${req.query.search.value}%'`)
-        }
-        if(req.query.search.value){
-            params.push(`sellingprice = '%${req.query.search.value}%'`)
-        }
-        if(req.query.search.value){
-            params.push(`unit ILIKE '%${req.query.search.value}%'`)
-        }
-
+        console.log(params)
         const limit = req.query.length
         const offset = req.query.start
         const sortBy = req.query.columns[req.query.order[0].column].data
         const sortMode = req.query.order[0].dir
 
-        const sqlData = `SELECT * FROM goods${params.length > 0 ?` WHERE ${params.join(' OR ')}` : ''} ORDER BY ${sortBy} ${sortMode} LIMIT ${limit} OFFSET ${offset} `
-        const sqlTotal = `SELECT COUNT(*) as total FROM goods${params.length > 0 ? ` WHERE ${params.join(' OR ')}`: ''}`
+        const sqlData = `SELECT * FROM goods${params.length > 0 ? ` WHERE ${params.join(' OR ')}` : ''} ORDER BY ${sortBy} ${sortMode} LIMIT ${limit} OFFSET ${offset} `
+        const sqlTotal = `SELECT COUNT(*) as total FROM goods${params.length > 0 ? ` WHERE ${params.join(' OR ')}` : ''}`
         const data = await pool.query(sqlData)
         const total = await pool.query(sqlTotal)
+        // console.log(data.rows)
 
         const response = {
-            "draw" : Number(req.query.draw),
-            "recordsTotal" : total.rows[0].total,
-            "recordsFiltered" : total.rows[0].total,
-            "data" : data.rows
+            "draw": Number(req.query.draw),
+            "recordsTotal": total.rows[0].total,
+            "recordsFiltered": total.rows[0].total,
+            "data": data.rows
         }
         res.json(response)
-        
+
     })
     return router
 }

@@ -4,7 +4,7 @@ var moment = require('moment')
 const { isLoggedIn } = require('../helpers/util')
 
 module.exports = (pool) => {
-    router.get('/',isLoggedIn, async (req, res, next) => {
+    router.get('/', isLoggedIn, async (req, res, next) => {
         try {
             const sql = `SELECT * FROM sales LEFT JOIN customers ON sales.customer = customers.customerid `
             const data = await pool.query(sql)
@@ -55,9 +55,9 @@ module.exports = (pool) => {
     router.post('/show/:invoice', async (req, res, next) => {
         const { invoice } = req.params
         const { totalsum, pay, change, customername } = req.body
-        const {userid} = req.session.user
+        const { userid } = req.session.user
         const sql = `UPDATE sales SET totalsum = $1, pay = $2, change = $3, customer = $4 , operator = $5 WHERE invoice = $6`
-        await pool.query(sql, [totalsum, pay, change, customername, userid,invoice])
+        await pool.query(sql, [totalsum, pay, change, customername, userid, invoice])
         console.log('Success Creating Data Sales')
         res.redirect('/sales')
     })
@@ -126,6 +126,36 @@ module.exports = (pool) => {
         } catch (error) {
             console.log(error)
             res.status(500).json({ error: 'Error Deleting Data Sales' })
+        }
+    })
+
+    router.get('/datatable', async (req, res, next) => {
+        try {
+            let params = []
+            const value = req.query.search.value
+            if(value){
+                params.push(`invoice ILIKE '%${value}%'`)
+            }
+            const limit = req.query.length
+            const offset = req.query.start
+            const sortBy = req.query.columns[req.query.order[0].column].data
+            const sortMode = req.query.order[0].dir
+            const sqlData = `SELECT * FROM sales LEFT JOIN customers ON sales.customer = customers.customerid${params.length > 0 ?` WHERE ${params.join(' OR ')}` : ''} ORDER BY ${sortBy} ${sortMode} LIMIT ${limit} OFFSET ${offset} `
+            const sqlTotal = `SELECT COUNT(*) as total FROM sales${params.length > 0 ? ` WHERE ${params.join(' OR ')}`: ''}`
+            const data = await pool.query(sqlData)
+            const total = await pool.query(sqlTotal)
+            console.log(total.rows[0].total)
+            const response = {
+                "draw" : Number(req.query.draw),
+                "recordsTotal" : total.rows[0].total,
+                "recordsFiltered" : total.rows[0].total,
+                "data" : data.rows
+            }
+    
+            res.json(response)
+        } catch (error) {
+            console.log(error)
+            res.status(500).json({error: "Error Getting the Data Table"})
         }
     })
     return router

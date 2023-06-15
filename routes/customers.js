@@ -79,6 +79,7 @@ module.exports = (pool) => {
         if(req.query.search.value){
             params.push(`phone ILIKE '%${req.query.search.value}%'`)
         }
+        console.log(params)
 
         const limit = req.query.length
         const offset = req.query.start

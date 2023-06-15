@@ -5,13 +5,13 @@ const { isLoggedIn } = require('../helpers/util');
 module.exports = (pool) => {
 
 
-    router.get('/', isLoggedIn,async (req, res, next) => {
+    router.get('/', isLoggedIn, async (req, res, next) => {
         try {
             const sql = `SELECT * FROM purchases LEFT JOIN suppliers ON purchases.supplier = suppliers.supplierid ORDER BY time desc`
             const data = await pool.query(sql)
             const hasil = req.session.user.id !== data.rows[0].operator
-            console.log(hasil)
-            res.render('purchases/index', { title: 'POS - Purchase', current: 'purchases', user: req.session.user, data: data.rows, moment, current_user : req.session.user})
+            console.log(req.session.user)
+            res.render('purchases/index', { title: 'POS - Purchase', current: 'purchases', user: req.session.user, data: data.rows, moment, current_user: req.session.user })
         } catch (error) {
             console.log(error)
             res.status(500).json({ error: 'Error Getting Data Purchases' })
@@ -62,12 +62,12 @@ module.exports = (pool) => {
             const { totalsum, suppliername } = req.body
             const { userid } = req.session.user
             const sql = `UPDATE purchases SET totalsum = $1, supplier = $2, operator = $3 WHERE invoice = $4`
-            await pool.query(sql, [totalsum,suppliername,userid, invoice])
+            await pool.query(sql, [totalsum, suppliername, userid, invoice])
             console.log('Succes Creating Data Purchases')
             res.redirect('/purchases')
         } catch (error) {
             console.log(error)
-            res.status(500).json({error : 'Error Creating Data Purchases'})
+            res.status(500).json({ error: 'Error Creating Data Purchases' })
         }
     })
     router.get('/tables/:invoice', async (req, res, next) => {
@@ -128,6 +128,31 @@ module.exports = (pool) => {
             console.log(error)
             res.status(500).json({ error: 'Error Deleting Data Purchases' })
         }
+    })
+
+    router.get('/datatable', async (req, res, next) => {
+        let params = []
+        const value = req.query.search.value
+        if(value){
+            params.push(`invoice ILIKE '%${value}%'`)
+        }
+        const limit = req.query.length
+        const offset = req.query.start
+        const sortBy = req.query.columns[req.query.order[0].column].data
+        const sortMode = req.query.order[0].dir
+        const sqlData = `SELECT purchases.*, suppliers.* FROM purchases LEFT JOIN suppliers ON purchases.supplier = suppliers.supplierid${params.length > 0 ?` WHERE ${params.join(' OR ')}` : ''} ORDER BY ${sortBy} ${sortMode} LIMIT ${limit} OFFSET ${offset} `
+        const sqlTotal = `SELECT COUNT(*) as total FROM purchases${params.length > 0 ? ` WHERE ${params.join(' OR ')}`: ''}`
+        const data = await pool.query(sqlData)
+        const total = await pool.query(sqlTotal)
+        console.log(total.rows[0].total)
+        const response = {
+            "draw" : Number(req.query.draw),
+            "recordsTotal" : total.rows[0].total,
+            "recordsFiltered" : total.rows[0].total,
+            "data" : data.rows
+        }
+
+        res.json(response)
     })
     return router
 }
