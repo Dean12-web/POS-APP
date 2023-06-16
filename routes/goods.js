@@ -116,7 +116,8 @@ module.exports = (pool) => {
             params.push(`barcode ILIKE '%${searchValue}%'`);
             params.push(`name ILIKE '%${searchValue}%'`);
             params.push(`unit ILIKE '%${searchValue}%'`);
-            // params.push(`stock = ${searchValue}`);
+            // casting, changing the stock from integer into string
+            params.push(`stock::text ILIKE '%${searchValue}%'`);
             // params.push(`purchaseprice = ${searchValue}`);
 
         }
