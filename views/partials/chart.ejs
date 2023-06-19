@@ -39,7 +39,7 @@
                 // Push the CSV row to the rows array
                 rows.push(csvRow);
             });
-            console.log(rows)
+            // console.log(rows)
 
             // Join the rows array with line breaks to create the final CSV content
             const csvContent = rows.join('\n');
@@ -84,7 +84,7 @@
     }
     const lineChart = () => {
         const getMonth = <%- JSON.stringify(getMonth) %>;
-        console.log(getMonth)
+        // console.log(getMonth)
         const monthlyIncome = <%- JSON.stringify(monthlyIncome) %>;
         const ctx = $("#myLineChart");
         new Chart(ctx, {
