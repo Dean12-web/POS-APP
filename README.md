@@ -13,7 +13,7 @@ BACK-END
 - NodeJS
 - ExpressJS
 - POSTGRE SQL
-
-
+SCREEN SHOOTS
+![alt text](https://github.com/Dean12-web/POS-APP/blob/main/ScreenShoot/Login.png)
 
 
