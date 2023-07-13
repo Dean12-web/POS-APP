@@ -12,5 +12,8 @@ FRONT-END
 BACK-END
 - NodeJS
 - ExpressJS
+- POSTGRE SQL
+
+
 
 
