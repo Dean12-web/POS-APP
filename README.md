@@ -19,4 +19,22 @@ SCREEN SHOOTS
 - Login Page
 ![alt text](https://github.com/Dean12-web/POS-APP/blob/main/ScreenShoot/Login.png)
 
+- Dashboard Page
+![alt text](https://github.com/Dean12-web/POS-APP/blob/main/ScreenShoot/Dashboard.png)
+
+- User Page
+![alt text](https://github.com/Dean12-web/POS-APP/blob/main/ScreenShoot/User.png)
+
+- Purchase Page
+![alt text](https://github.com/Dean12-web/POS-APP/blob/main/ScreenShoot/Purchases.png)
+
+- Purchase Detail Page
+![alt text](https://github.com/Dean12-web/POS-APP/blob/main/ScreenShoot/Purchase_Detail.png)
+
+- Goods Page
+![alt text](https://github.com/Dean12-web/POS-APP/blob/main/ScreenShoot/Goods.png)
+
+- Goods Detail 
+![alt text](https://github.com/Dean12-web/POS-APP/blob/main/ScreenShoot/GoodsDetail.png)
+
 
