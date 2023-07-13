@@ -29,7 +29,7 @@ SCREEN SHOOTS
 ![alt text](https://github.com/Dean12-web/POS-APP/blob/main/ScreenShoot/Purchases.png)
 
 - Purchase Detail Page
-![alt text](https://github.com/Dean12-web/POS-APP/blob/main/ScreenShoot/Purchase_Detail.png)
+![alt text](https://github.com/Dean12-web/POS-APP/blob/main/ScreenShoot/PurchasesDetail.png)
 
 - Goods Page
 ![alt text](https://github.com/Dean12-web/POS-APP/blob/main/ScreenShoot/Goods.png)
