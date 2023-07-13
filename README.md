@@ -16,7 +16,7 @@ BACK-END
 
   
 SCREEN SHOOTS
--Login Page
+- Login Page
 ![alt text](https://github.com/Dean12-web/POS-APP/blob/main/ScreenShoot/Login.png)
 
 
